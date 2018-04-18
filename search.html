@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-   <meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>Assignment 2 Room</title>
-   <link href="css/bootstrap.min.css" rel="stylesheet">
-
+<head>
+    <meta charset="UTF-8">
+    <title>Search For Booking</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet" type="text/css" />
- </head>
-  <body>
+</head>
+<body>
   <div id="container">
      <header>
        <div class="row">
 			<ul>
-				<li style="margin-left: 2%;"> <a  href="/" title="Booking" class="active"> Home</a></li>
-				<li> <a  href="/addRoom" title="Add">Add New Room</a></li>
-                <li> <a  href="/search" title="Search">Search</a></li>
+				<li style="margin-left: 2%;"> <a  href="/" title="GPU Information"> Home</a></li>
+				<li> <a  href="/addRoom" title="Add New Room">Add New Room</a></li>
+				<li> <a  href="/search" title="Search"  class="active">Search</a></li>
                 <li> <a  href="/download" title="Download">Download</a></li>
 				<li style=" float:right; margin-right: 2%">
                 {% if user %}
@@ -28,9 +26,40 @@
 	   </div>
 	 </header>
   <section>
-	  <h4 class="listHeader headerColor">{{ main_header }}</h4>
 
+	  {% if user %}
+                    <h4 class="listHeader headerColor">{{ main_header }}</h4>
 	   <div class="row">
+			<div class="col-md-11" style="margin-left: 5%;">
+				<form method="post" id="input_data_form" action="/search">
+                    <table id="search" class="table table-hover table-bordered">
+                        <tbody>
+						<tr>
+        					<td >Please select the date</td>
+        					<td >
+							<div class="row">
+								<div class="col-md-4">
+									<label for="startDate"></label>
+								</div>
+								<div class="col-md-4">
+									<input type="date" id="startDate" name="date" placeholder="yyyy-mm-dd" required/>
+								</div>
+							</div>
+								<p style="color: red">{{ error_message }}</p>
+                            </td>
+        				  </tr>
+    				    </tbody>
+			        </table>
+                    <div class="row">
+						<div class="col-md-2 col-md-offset-6">
+							<input  class="btn btn-primary" form="input_data_form" type="submit" value="Search" name="button"/>
+						</div>
+					</div>
+                </form>
+			</div>
+		  </div>
+          <div class="row">
+              <div class="row">
 			<div class="col-md-11" style="margin-left: 5%;">
                 {% if room_list %}
                     <table id="table" class="table table-hover table-bordered">
@@ -38,7 +67,7 @@
 				        <tr>
 					        <th style="text-align: center">Room Name</th>
                             <th style="text-align: center">Room Created By</th>
-                            <th style="text-align: center">Room Bookings</th>
+                            <th style="text-align: center">Matched Room Bookings (For full list, go to home page)</th>
                             <th style="text-align: center"></th>
 				        </tr>
 				    </thead>
@@ -48,11 +77,9 @@
                             <td align="center">{{ each_room.roomName }}</td>
                             <td align="center">{{ each_room.createdBy }}</td>
                             <td align="center">
-                                <button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#{{each_room.roomName}}">View/Add Bookings</button>
-                                <br>
-                                <div id="{{each_room.roomName}}" class="collapse">
+                                    <div id="{{each_room.roomName}}">
                                         {% if each_room.booking %}
-                                            <table id="inner_table" class="table table-condensed" style="margin-top: 1%">
+                                            <table id="inner_table" class="table table-bordered">
                                                 <thead>
                                                     <tr>
                                                         <th style="text-align: center">Booking ID</th>
@@ -78,6 +105,7 @@
                                                                 </form>
                                                             </td>
                                                         </tr>
+
                                                     {% endfor %}
                                                 </tbody>
                                             </table>
@@ -103,10 +131,15 @@
                     </tbody>
                     </table>
                     {% else %}
-                    No rooms are present. Please use add option to add the rooms.
                 {% endif %}
-			</div>
-       </div>
+			    </div>
+            </div>
+          </div>
+                {% else %}
+                   <h4 class="listHeader">Please Login to Access This Page..!!</h4>
+                {% endif %}
+
+
 
  </section>
      <!-- <footer class="footer"> -->
@@ -120,6 +153,4 @@
 
 
   </body>
-
-
-  </html>
+</html>

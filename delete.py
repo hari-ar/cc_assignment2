@@ -3,7 +3,7 @@ import jinja2
 import os
 from google.appengine.api import users
 from google.appengine.ext import ndb
-from roommodel import RoomModel
+from model import RoomModel
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
@@ -20,7 +20,7 @@ class DeleteRoom(webapp2.RequestHandler):
         user = users.get_current_user()
         error_message = ''
         room_list = ''
-
+        # User Authentication.
         if user:
             main_header = 'Rooms Information'
             login_logout = 'Logout'
@@ -30,8 +30,9 @@ class DeleteRoom(webapp2.RequestHandler):
             user_room_key = ndb.Key('RoomModel', user_given_room_name)
             room_ndb_object = user_room_key.get()
             existing_bookings = room_ndb_object.booking
+            # Check for existing bookings
             if len(existing_bookings) == 0:
-                room_ndb_object.key.delete()
+                room_ndb_object.key.delete()  # Delete room
                 error_message = "Room is deleted, please click on home to see updated info."
             else:
                 error_message = "Warning : Rooms which have bookings, can not be deleted. Please delete bookings first."
@@ -59,7 +60,7 @@ class DeleteBooking(webapp2.RequestHandler):
         user = users.get_current_user()
         error_message = ''
         room_list = ''
-
+        # User Authentication.
         if user:
             main_header = 'Rooms Information'
             login_logout = 'Logout'
@@ -72,10 +73,10 @@ class DeleteBooking(webapp2.RequestHandler):
             print("Booking id")
             print(new_booking_id)
             existing_bookings = room_ndb_object.booking
-            for each_booking in existing_bookings:
+            for each_booking in existing_bookings:  # Steps to identify selected booking
                 if each_booking.bookingId == new_booking_id:
-                    room_ndb_object.booking.remove(each_booking)
-                    room_ndb_object.put()
+                    room_ndb_object.booking.remove(each_booking)  # Pass the matched booking object
+                    room_ndb_object.put()  # Persist back to ndb
                     break
 
         else:

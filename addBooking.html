@@ -3,7 +3,7 @@
   <head>
    <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>Assignment 1 GPU</title>
+   <title>Assignment 2 Add Booking</title>
    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <link href="css/style.css" rel="stylesheet" type="text/css" />
@@ -15,6 +15,8 @@
 			<ul>
 				<li style="margin-left: 2%;"> <a  href="/" title="GPU Information"> Home</a></li>
 				<li> <a  href="/addRoom" title="Add New Room" class="active">Add New Room</a></li>
+                <li> <a  href="/search" title="Search">Search</a></li>
+                <li> <a  href="/download" title="Download">Download</a></li>
 				<li style=" float:right; margin-right: 2%">
                 {% if user %}
                     <a href='{{ login_logout_url }}'>Logout</a>
@@ -29,27 +31,49 @@
 
 	  {% if user %}
                     <h4 class="listHeader headerColor">{{ main_header }}</h4>
-	  <form method="post" id="input_data_form" action="/addBooking">
-            <p>Please add booking info for {{ room_name }}</p>
-            <div></div>
-            <label for="bookingId">Booking Id</label>
-            <input type="text" id="bookingId" name="bookingId">
-            <div></div>
-            <label for="startDate">Start Date</label>
-            <input type="date" id="startDate" name="startDate"/>
-            <label for="startTime">Start Time</label>
-            <input type="time" id="startTime" name="startTime"/>
-            <div></div>
-            <label for="endDate">End Date</label>
-            <input type="date" id="endDate" name="endDate"/>
-            <label for="endTime">End Time</label>
-            <input type="time" id="endTime" name="endTime"/>
-            <p style="color: red">{{ error_message }}</p>
-            <input type="submit" value="Add Booking"/>
-            <input type="hidden" value="{{ room_name }}" name="room_name"/>
-            <input type="hidden" id="page_id" name="page_id" value="addBooking"/>
-      </form>
-                {% else %}
+					<div style="margin-left : 3%">
+					`	<form method="post" class="form-horizontal"  id="input_data_form" action="/addBooking">
+						<h4>Please add booking info for {{ room_name }}</h4>
+						</br>
+						<div class="form-group">
+							<label for="bookingId" class="col-md-2">Booking Id : </label>
+
+						<div class="col-md-2">
+									<input type="text" id="bookingId" name="bookingId" placeholder="Unique Booking ID" required>
+						</div>
+						</div>
+					   <div class="form-group">
+							<label for="startDate" class="col-md-2">Start Date :</label>
+							<div class="col-md-2">
+								<input type="date" id="startDate" name="startDate" placeholder="yyyy-mm-dd" required/>
+						   </div>
+							<label for="startTime" class="col-md-2">Start Time :</label>
+							<div class="col-md-4">
+								<input type="time" id="startTime" name="startTime" placeholder="HH:MM" required/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="endDate" class="col-md-2">End Date</label>
+							<div class="col-md-2">
+								<input type="date" id="endDate"  name="endDate" placeholder="yyyy-mm-dd" required/>
+						   </div>
+							<label for="endTime" class="col-md-2">End Time</label>
+							<div class="col-md-4">
+								<input type="time" id="endTime" name="endTime" placeholder="HH:MM" required/>
+							</div>
+						</div>
+						<p style="color: red">{{ error_message }}</p>
+						<div class="row col-md-offset-4">
+							<input type="submit" class="btn btn-primary" value="Add Booking"/>
+
+						</div>
+
+						<input type="hidden" value="{{ room_name }}" name="room_name"/>
+						<input type="hidden" id="page_id" name="page_id" value="addBooking"/>
+					</form>
+
+					</div>
+	  {% else %}
                    <h4 class="listHeader">Please Login to Access This Page..!!</h4>
                 {% endif %}
 
@@ -67,4 +91,4 @@
   </body>
 
 
-  </html>
+  </html>>

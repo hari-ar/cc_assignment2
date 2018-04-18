@@ -16,9 +16,11 @@
 #
 import webapp2
 from google.appengine.api import users
-from roommodel import RoomModel
+from model import RoomModel, BookingModel
 from add import AddRoom, AddBooking
 from delete import DeleteRoom, DeleteBooking
+from search import Search
+from download import Download
 import jinja2
 import os
 
@@ -36,15 +38,15 @@ class MainHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         room_list = ''
         error_message = ""
-
+        # Checking if user is logged in
         if user:
             main_header = 'Rooms Information'
             login_logout = 'Logout'
             login_logout_url = users.create_logout_url(self.request.uri)
-            room_list = RoomModel.query().fetch()
+            room_list = RoomModel.query().fetch()  # Retrieve all the rooms and send it to UI
 
         else:
-            main_header = 'Please Login to Access This Page..!!'
+            main_header = 'Please Login to Access This Page..!!'  # Error message to indicate user not logged in.
             login_logout = 'Login'
             login_logout_url = users.create_login_url(self.request.uri)
 
@@ -66,5 +68,7 @@ app = webapp2.WSGIApplication([
     ('/addRoom', AddRoom),
     ('/addBooking', AddBooking),
     ('/delete', DeleteRoom),
-    ('/deleteBooking', DeleteBooking)
+    ('/deleteBooking', DeleteBooking),
+    ('/search', Search),
+    ('/download', Download)
 ], debug=True)

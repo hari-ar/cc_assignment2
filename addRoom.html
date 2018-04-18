@@ -3,7 +3,7 @@
   <head>
    <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>Assignment 1 GPU</title>
+   <title>Assignment 2 Add Room</title>
    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <link href="css/style.css" rel="stylesheet" type="text/css" />
@@ -13,8 +13,10 @@
      <header>
        <div class="row">
 			<ul>
-				<li style="margin-left: 2%;"> <a  href="/" title="GPU Information"> Home</a></li>
+				<li style="margin-left: 2%;"> <a  href="/" title="Room Information"> Home</a></li>
 				<li> <a  href="/addRoom" title="Add New Room" class="active">Add New Room</a></li>
+				<li> <a  href="/search" title="Search">Search</a></li>
+                <li> <a  href="/download" title="Download">Download</a></li>
 				<li style=" float:right; margin-right: 2%">
                 {% if user %}
                     <a href='{{ login_logout_url }}'>Logout</a>
@@ -33,7 +35,7 @@
 			<div class="col-md-11" style="margin-left: 5%;">
 				<form method="post" id="input_data_form" action="/addRoom">
 					</form>
-                    <table id="edit_table" class="table table-hover table-bordered">
+                    <table id="edit_table" class="table table-hover">
                         <tbody>
 						<tr>
         					<td >Name of the Room</td>

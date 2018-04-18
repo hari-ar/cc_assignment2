@@ -4,9 +4,7 @@ import os
 import datetime
 from google.appengine.api import users
 from google.appengine.ext import ndb
-
-from bookingmodel import BookingModel
-from roommodel import RoomModel
+from model import RoomModel, BookingModel
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
@@ -16,13 +14,13 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 )
 
 
-class AddRoom(webapp2.RequestHandler):
+class AddRoom(webapp2.RequestHandler):  # Add room class handles for addition of room
     def get(self):
         self.response.headers['Content-Type'] = 'text/html'
         user = users.get_current_user()
 
         if user:
-            main_header = 'Please Add GPU Information Below'
+            main_header = 'Please Add Room Information Below'
             login_logout = 'Logout'
             login_logout_url = users.create_logout_url(self.request.uri)
 
@@ -40,7 +38,7 @@ class AddRoom(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('addRoom.html')
         self.response.write(template.render(template_values))
 
-    def post(self):
+    def post(self):  # Handles addition of data into ndb
         print("Post method of booking")
         self.response.headers['Content-Type'] = 'text/html'
         user = users.get_current_user()
@@ -53,7 +51,7 @@ class AddRoom(webapp2.RequestHandler):
             user_given_room_name = self.request.get("room_name")
             my_model_key = ndb.Key('RoomModel', user_given_room_name)
             my_room = my_model_key.get()
-            if my_room:
+            if my_room:  # Validating if the room is already present
                 error_message = 'Room Already exists ! Please use add booking option for booking'
             else:
                 my_room = RoomModel(id=user_given_room_name)
@@ -77,7 +75,7 @@ class AddRoom(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 
-class AddBooking(webapp2.RequestHandler):
+class AddBooking(webapp2.RequestHandler):  # Handles add booking
 
     def post(self):
         self.response.headers['Content-Type'] = 'text/html'
@@ -115,7 +113,8 @@ class AddBooking(webapp2.RequestHandler):
                     error_message = "Start Time should always be greater than End Time"
                 if add_booking_flag and (new_start_date_time < datetime.datetime.now()):  # Check for past Bookings
                     add_booking_flag = False
-                    error_message = "No past bookings allowed"
+                    error_message = "No past bookings allowed. Current time is : {0} GMT(No daylight savings)".format(
+                        datetime.datetime.now().strftime("%Y-%m-%d  %H:%M"))
                 # Check for add_booking_flag which will be false if any of above conditions are true.!
                 if add_booking_flag is True:
                     for each_booking in existing_bookings:
@@ -132,7 +131,8 @@ class AddBooking(webapp2.RequestHandler):
                             error_message = "Booking Overlaps, " \
                                             "Please view bookings and make new non-overlapping booking"
                             break
-                if add_booking_flag:
+                if add_booking_flag:  # Checks if the booking has passed all the checks,
+                    # if yes, will be persisted to ndb
                     new_booking = BookingModel(startTime=new_start_date_time,
                                                endTime=new_end_date_time,
                                                bookingId=new_booking_id,
