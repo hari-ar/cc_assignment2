@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+   <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>Assignment 1 GPU</title>
+   <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+ </head>
+  <body>
+  <div id="container">
+     <header>
+       <div class="row">
+			<ul>
+				<li style="margin-left: 2%;"> <a  href="/" title="Booking" class="active"> Home</a></li>
+				<li> <a  href="/addRoom" title="Add">Add New Room</a></li>
+				<li style=" float:right; margin-right: 2%">
+                {% if user %}
+                    <a href='{{ login_logout_url }}'>Logout</a>
+                {% else %}
+                    <a href='{{ login_logout_url }}'>Login</a>
+                {% endif %}
+                </li>
+			</ul>
+	   </div>
+	 </header>
+  <section>
+	  <h4 class="listHeader headerColor">{{ main_header }}</h4>
+
+	   <div class="row">
+			<div class="col-md-11" style="margin-left: 5%;">
+                {% if room_list %}
+                    <table id="table" class="table table-hover table-bordered">
+                    <thead>
+				        <tr>
+					        <th style="text-align: center">Room Name</th>
+                            <th style="text-align: center">Room Created By</th>
+                            <th style="text-align: center">Room Bookings</th>
+                            <th style="text-align: center"></th>
+				        </tr>
+				    </thead>
+                    <tbody>
+                    {% for each_room in room_list %}
+                        <tr>
+                            <td align="center">{{ each_room.roomName }}</td>
+                            <td align="center">{{ each_room.createdBy }}</td>
+                            <td align="center">
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#{{each_room.roomName}}">View/Add Bookings</button>
+                                    <div id="{{each_room.roomName}}" class="collapse">
+                                        {% if each_room.booking %}
+                                            <table id="inner_table" class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="text-align: center">Booking ID</th>
+                                                        <th style="text-align: center">Start Time</th>
+                                                        <th style="text-align: center">End Time</th>
+                                                        <th style="text-align: center">Reserved By</th>
+                                                        <th style="text-align: center"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    {% for each_booking in each_room.booking %}
+                                                        <tr>
+                                                            <td style="text-align: center">{{each_booking.bookingId}}</td>
+                                                            <td style="text-align: center">{{each_booking.startTime}}</td>
+                                                            <td style="text-align: center">{{each_booking.endTime}}</td>
+                                                            <td style="text-align: center">{{each_booking.userCreated}}</td>
+                                                            <td style="text-align: center">
+                                                                <form action="/deleteBooking" method="post">
+                                                                    <input type="hidden" name="room_name" value="{{ each_room.roomName }}"/>
+                                                                    <input type="hidden" name="bookingId" value="{{each_booking.bookingId}}"/>
+                                                                    <input align="center" class="btn btn-danger btn-sm"  type="submit" value="Delete Booking" name="button"/>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        {% else %}
+                                            No Bookings Found.
+                                        {% endif %}
+                                        <form id="newBooking" method="post" action="/addBooking">
+                                            <button type="submit" class="btn btn-success btn-sm">Add a Booking</button>
+                                            <input type="hidden" value="{{ each_room.key.id() }}" name="room_name"/>
+                                            <input type="hidden" value="main" id="page_id" name="page_id"/>
+                                        </form>
+                                    </div>
+                            </td>
+                            <td style="text-align: center">
+                                <form action="/delete" method="post">
+                                    <input type="hidden" name="room_name" value="{{ each_room.roomName }}"/>
+                                    <input align="center" class="btn btn-danger btn-sm"  type="submit" value="Delete Room" name="button"/>
+                                    <p style="color: red">{{ error_message }}</p>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                    {% else %}
+                {% endif %}
+			</div>
+       </div>
+
+ </section>
+     <!-- <footer class="footer"> -->
+		<!-- <div class="col-12" style="height:30px;"> -->
+			 <!-- <p style="text-align:center;">Assignment</p>  -->
+            <!-- </div> -->
+    <!-- </footer> -->
+   </div>
+ <script src="js/jquery-3.3.1.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+  </body>
+
+
+  </html>

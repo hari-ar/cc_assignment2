@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+   <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>Assignment 1 GPU</title>
+   <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+ </head>
+  <body>
+  <div id="container">
+     <header>
+       <div class="row">
+			<ul>
+				<li style="margin-left: 2%;"> <a  href="/" title="GPU Information"> Home</a></li>
+				<li> <a  href="/addRoom" title="Add New Room" class="active">Add New Room</a></li>
+				<li style=" float:right; margin-right: 2%">
+                {% if user %}
+                    <a href='{{ login_logout_url }}'>Logout</a>
+                {% else %}
+                    <a href='{{ login_logout_url }}'>Login</a>
+                {% endif %}
+                </li>
+			</ul>
+	   </div>
+	 </header>
+  <section>
+
+	  {% if user %}
+                    <h4 class="listHeader headerColor">{{ main_header }}</h4>
+	   <div class="row">
+			<div class="col-md-11" style="margin-left: 5%;">
+				<form method="post" id="input_data_form" action="/addRoom">
+					</form>
+                    <table id="edit_table" class="table table-hover table-bordered">
+                        <tbody>
+						<tr>
+        					<td >Name of the Room</td>
+        					<td >
+							<div class="row">
+								<div class="col-md-4">
+									<label for="room_name" ></label>
+								</div>
+								<div class="col-md-4">
+									<input align="center" type="text" class="form-control"form="input_data_form" name="room_name" id="room_name" placeholder="Unique Room Name" required/>
+								</div>
+							</div>
+								<p style="color: red">{{ error_message }}</p>
+
+                            </td>
+        				  </tr>
+    				    </tbody>
+			        </table>
+                    <div class="row">
+						<div class="col-md-2 col-md-offset-6">
+							<input  class="btn btn-primary" form="input_data_form" type="submit" value="Add" name="button"/>
+						</div>
+					</div>
+
+			</div>
+		  </div>
+                {% else %}
+                   <h4 class="listHeader">Please Login to Access This Page..!!</h4>
+                {% endif %}
+
+
+
+ </section>
+     <!-- <footer class="footer"> -->
+		<!-- <div class="col-12" style="height:30px;"> -->
+			 <!-- <p style="text-align:center;">Assignment</p>  -->
+            <!-- </div> -->
+    <!-- </footer> -->
+   </div>
+ <script src="js/jquery-3.3.1.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+  </body>
+
+
+  </html>

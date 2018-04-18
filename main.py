@@ -15,13 +15,57 @@
 # limitations under the License.
 #
 import webapp2
+from google.appengine.api import users
+from roommodel import RoomModel
+from add import AddRoom, AddBooking
+from delete import DeleteRoom, DeleteBooking
+import jinja2
+import os
+
+
+JINJA_ENVIRONMENT = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions=['jinja2.ext.autoescape'],
+    autoescape=True
+)
 
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+        self.response.headers['Content-Type'] = 'text/html'
+        user = users.get_current_user()
+        room_list = ''
+        error_message = ''
+
+        if user:
+            main_header = 'Rooms Information'
+            login_logout = 'Logout'
+            login_logout_url = users.create_logout_url(self.request.uri)
+            room_list = RoomModel.query().fetch()
+
+        else:
+            main_header = 'Please Login to Access This Page..!!'
+            login_logout = 'Login'
+            login_logout_url = users.create_login_url(self.request.uri)
+
+        template_values = {
+            'main_header': main_header,
+            'login_logout': login_logout,
+            'login_logout_url': login_logout_url,
+            'user': user,
+            'room_list': room_list,
+            'error_message': error_message
+        }
+
+        template = JINJA_ENVIRONMENT.get_template('main.html')
+        self.response.write(template.render(template_values))
 
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/addRoom', AddRoom),
+    ('/addBooking', AddBooking),
+    ('/delete', DeleteRoom),
+    ('/deleteBooking', DeleteBooking)
 ], debug=True)
+
