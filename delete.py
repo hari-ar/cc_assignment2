@@ -19,6 +19,7 @@ class DeleteRoom(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'text/html'
         user = users.get_current_user()
         error_message = ''
+        room_list = ''
 
         if user:
             main_header = 'Rooms Information'
@@ -57,6 +58,7 @@ class DeleteBooking(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'text/html'
         user = users.get_current_user()
         error_message = ''
+        room_list = ''
 
         if user:
             main_header = 'Rooms Information'

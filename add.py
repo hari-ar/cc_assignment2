@@ -104,7 +104,8 @@ class AddBooking(webapp2.RequestHandler):
                 new_end_time = self.request.get("endTime")
                 new_booking_id = self.request.get("bookingId")
                 # Convert user input to date format
-                new_start_date_time = datetime.datetime.strptime(new_start_date + "T" + new_start_time, date_time_format)
+                new_start_date_time = datetime.datetime.strptime(new_start_date + "T" + new_start_time,
+                                                                 date_time_format)
                 new_end_date_time = datetime.datetime.strptime(new_end_date+"T"+new_end_time, date_time_format)
                 add_booking_flag = True
                 print(new_start_date_time)
@@ -116,7 +117,7 @@ class AddBooking(webapp2.RequestHandler):
                     add_booking_flag = False
                     error_message = "No past bookings allowed"
                 # Check for add_booking_flag which will be false if any of above conditions are true.!
-                if add_booking_flag:
+                if add_booking_flag is True:
                     for each_booking in existing_bookings:
                         existing_start_date_time = each_booking.startTime
                         existing_end_date_time = each_booking.endTime

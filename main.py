@@ -35,7 +35,7 @@ class MainHandler(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'text/html'
         user = users.get_current_user()
         room_list = ''
-        error_message = ''
+        error_message = ""
 
         if user:
             main_header = 'Rooms Information'
@@ -68,4 +68,3 @@ app = webapp2.WSGIApplication([
     ('/delete', DeleteRoom),
     ('/deleteBooking', DeleteBooking)
 ], debug=True)
-
